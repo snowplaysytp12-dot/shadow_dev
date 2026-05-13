@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rayzen | Eternal Night Amethyst</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Prompt:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --dark-bg: #05010a;
+            --main-purple: #bc13fe;
+            --soft-purple: #6c5ce7;
+            --card-bg: rgba(10, 5, 20, 0.85);
+            --neon-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+        }
+
+        /* [SECURITY] */
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            user-select: none !important; -webkit-user-drag: none !important;
+            font-family: 'Prompt', sans-serif; cursor: default;
+        }
+
+        body {
+            background: var(--dark-bg);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; padding: 20px;
+        }
+
+        /* Purple Snow Canvas */
+        #snow-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at center, #0f0519 0%, #05010a 100%);
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            display: flex; flex-direction: row; gap: 30px;
+            width: 100%; max-width: 1100px; z-index: 10;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Dark Glass Card */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(188, 19, 254, 0.15);
+            border-radius: 40px;
+            padding: 50px 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--main-purple);
+            box-shadow: var(--neon-shadow);
+        }
+
+        /* Left Side: Profile */
+        .profile-side { width: 380px; text-align: center; flex-shrink: 0; }
+
+        .pfp-wrap {
+            position: relative; width: 170px; height: 170px; margin: 0 auto 30px;
+        }
+
+        .pfp-wrap img {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 3px solid var(--main-purple); padding: 8px;
+            box-shadow: 0 0 25px rgba(188, 19, 254, 0.5); object-fit: cover;
+        }
+
+        .status-dot {
+            position: absolute; bottom: 10px; right: 10px;
+            width: 30px; height: 30px; border-radius: 50%;
+            border: 5px solid #0a0514; background: #636e72;
+        }
+
+        .name-txt {
+            font-size: 32px; font-weight: 800; color: #fff;
+            text-shadow: 0 0 15px rgba(188, 19, 254, 0.6); margin-bottom: 5px;
+        }
+
+        .tag-txt {
+            font-size: 13px; color: var(--main-purple);
+            font-family: 'Montserrat', sans-serif; margin-bottom: 35px;
+            display: block; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+        }
+
+        /* Buttons */
+        .btn-list { display: flex; flex-direction: column; gap: 15px; }
+        .btn {
+            padding: 18px; border-radius: 20px; text-decoration: none;
+            color: #fff; font-weight: 600; display: flex;
+            align-items: center; justify-content: center; gap: 12px;
+            transition: 0.4s; font-size: 15px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(188, 19, 254, 0.1);
+        }
+        .btn-dc { background: #5865F2; }
+        .btn-ig { background: linear-gradient(45deg, #833ab4, #fd1d1d, #f56040); }
+        .btn:hover { transform: scale(1.03); border-color: var(--main-purple); filter: brightness(1.1); }
+
+        /* Right Side: Skills */
+        .skill-side { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        .header-title {
+            font-size: 20px; font-weight: 700; color: #fff;
+            margin-bottom: 35px; border-left: 4px solid var(--main-purple);
+            padding-left: 15px; letter-spacing: 1px;
+        }
+
+        .skill-box { margin-bottom: 25px; }
+        .skill-info {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 14px; color: #efeff1; margin-bottom: 10px; font-weight: 600;
+        }
+
+        .skill-info i { font-size: 18px; margin-right: 8px; filter: drop-shadow(0 0 5px currentColor); }
+
+        /* Language Colors */
+        .fa-python { color: #4584b6; }
+        .fa-code { color: #00599c; } /* C++ */
+        .fa-js { color: #f7df1e; }
+        .fa-html5 { color: #e34f26; }
+
+        .track {
+            height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;
+        }
+        .fill {
+            height: 100%; border-radius: 10px;
+            background: linear-gradient(90deg, var(--main-purple), var(--soft-purple));
+            width: 0%; transition: width 3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .footer {
+            margin-top: 40px; padding: 20px; border-radius: 25px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(188, 19, 254, 0.1);
+            color: #7f8c8d; text-align: center; font-size: 12px; line-height: 1.6;
+        }
+
+        /* Status Colors */
+        .online { background: #00ff88 !important; box-shadow: 0 0 15px #00ff88; }
+        .idle { background: #ffaa00 !important; }
+        .dnd { background: #ff3e3e !important; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            body { overflow-y: auto; align-items: flex-start; padding: 40px 20px; }
+            .container { flex-direction: column; align-items: center; }
+            .profile-side, .skill-side { width: 100%; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <canvas id="snow-canvas"></canvas>
+
+    <div class="container">
+        <div class="card profile-side">
+            <div class="pfp-wrap">
+                <img id="avatar" src="" alt="Profile">
+                <div id="status" class="status-dot"></div>
+            </div>
+            <h1 id="dispName" class="name-txt">RAYZEN</h1>
+            <span id="uName" class="tag-txt">Connecting System...</span>
+            
+            <div class="btn-list">
+                <a href="https://discord.gg/7vUx9pHtXQ" target="_blank" class="btn btn-dc">
+                    <i class="fab fa-discord"></i> DISCORD SERVER
+                </a>
+                <a href="https://www.instagram.com/dech_crypt?igsh=cXNia3J4ZTZxeXdn" target="_blank" class="btn btn-ig">
+                    <i class="fab fa-instagram"></i> INSTAGRAM
+                </a>
+            </div>
+        </div>
+
+        <div class="card skill-side">
+            <h2 class="header-title">DEVELOPER_STATS_V3.sys</h2>
+
+            <div class="skill-box">
+                <div class="skill-info"><span><i class="fab fa-python"></i> PYTHON</span><span>95%</span></div>
+                <div class="track"><div class="fill" style="width: 95%;"></div></div>
+            </div>
+
+            <div class="skill-box">
+                <div class="skill-info"><span><i class="fas fa-code"></i> C++ / C#</span><span>82%</span></div>
+                <div class="track"><div class="fill" style="width: 82%;"></div></div>
+            </div>
+
+            <div class="skill-box">
+                <div class="skill-info"><span><i class="fab fa-js"></i> JAVASCRIPT</span><span>89%</span></div>
+                <div class="track"><div class="fill" style="width: 89%;"></div></div>
+            </div>
+
+            <div class="skill-box">
+                <div class="skill-info"><span><i class="fab fa-html5"></i> HTML5 / UI</span><span>92%</span></div>
+                <div class="track"><div class="fill" style="width: 92%;"></div></div>
+            </div>
+
+            <div class="footer">
+                "Code is the poetry of the digital night." <br>
+                <strong style="color: var(--main-purple);">PROTECTED BY RAYZEN SECURITY</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Purple Snow Animation
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initSnow() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speed: Math.random() * 1 + 0.5,
+                    opacity: Math.random() * 0.5 + 0.3
+                });
+            }
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(188, 19, 254, ${p.opacity})`; // สีม่วงนีออน
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#bc13fe';
+                ctx.fill();
+                p.y += p.speed;
+                p.x += Math.sin(p.y / 50) * 0.5;
+                if (p.y > canvas.height) p.y = -10;
+            });
+            requestAnimationFrame(drawSnow);
+        }
+        window.addEventListener('resize', initSnow);
+        initSnow(); drawSnow();
+
+        // 2. Discord API (Lanyard)
+        const UID = "1314293185836486737";
+        async function fetchDiscord() {
+            try {
+                const res = await fetch(`https://api.lanyard.rest/v1/users/${UID}`);
+                const { data } = await res.json();
+                if(data) {
+                    const u = data.discord_user;
+                    document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${UID}/${u.avatar}.png?size=512`;
+                    document.getElementById('dispName').innerText = u.display_name || u.username;
+                    document.getElementById('uName').innerText = `@${u.username}`;
+                    document.getElementById('status').className = 'status-dot ' + data.discord_status;
+                }
+            } catch(e) {}
+        }
+        fetchDiscord(); setInterval(fetchDiscord, 10000);
+
+        // 3. Security
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault(); return false;
+            }
+        });
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+        setInterval(() => { (function(){}).constructor("debugger")(); }, 500);
+    </script>
+</body>
+</html>
