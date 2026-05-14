@@ -17,10 +17,14 @@
             --neon-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
         }
 
-        /* [SECURITY] */
+        /* [STRICT SECURITY CSS] */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            user-select: none !important; -webkit-user-drag: none !important;
+            user-select: none !important; 
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            -webkit-user-drag: none !important;
             font-family: 'Prompt', sans-serif; cursor: default;
         }
 
@@ -31,20 +35,17 @@
             overflow: hidden; padding: 20px;
         }
 
-        /* Purple Snow Canvas */
         #snow-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(circle at center, #0f0519 0%, #05010a 100%);
         }
 
-        /* --- Main Layout --- */
         .container {
             display: flex; flex-direction: row; gap: 30px;
             width: 100%; max-width: 1100px; z-index: 10;
             animation: fadeIn 1.5s ease-out;
         }
 
-        /* Dark Glass Card */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(30px);
@@ -63,13 +64,8 @@
             box-shadow: var(--neon-shadow);
         }
 
-        /* Left Side: Profile */
         .profile-side { width: 380px; text-align: center; flex-shrink: 0; }
-
-        .pfp-wrap {
-            position: relative; width: 170px; height: 170px; margin: 0 auto 30px;
-        }
-
+        .pfp-wrap { position: relative; width: 170px; height: 170px; margin: 0 auto 30px; }
         .pfp-wrap img {
             width: 100%; height: 100%; border-radius: 50%;
             border: 3px solid var(--main-purple); padding: 8px;
@@ -93,7 +89,6 @@
             display: block; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
         }
 
-        /* Buttons */
         .btn-list { display: flex; flex-direction: column; gap: 15px; }
         .btn {
             padding: 18px; border-radius: 20px; text-decoration: none;
@@ -101,14 +96,24 @@
             align-items: center; justify-content: center; gap: 12px;
             transition: 0.4s; font-size: 15px;
             background: rgba(255,255,255,0.03); border: 1px solid rgba(188, 19, 254, 0.1);
+            cursor: pointer;
         }
         .btn-dc { background: #5865F2; }
         .btn-ig { background: linear-gradient(45deg, #833ab4, #fd1d1d, #f56040); }
-        .btn:hover { transform: scale(1.03); border-color: var(--main-purple); filter: brightness(1.1); }
+        
+        /* ปุ่มแก้เครียด - พร้อมสติกเกอร์ผี */
+        .btn-stress {
+            background: rgba(188, 19, 254, 0.15);
+            border: 2px dashed var(--main-purple);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .btn-stress:hover { background: rgba(188, 19, 254, 0.25); }
+        .btn-stress:active { transform: scale(0.95); }
 
-        /* Right Side: Skills */
         .skill-side { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-
         .header-title {
             font-size: 20px; font-weight: 700; color: #fff;
             margin-bottom: 35px; border-left: 4px solid var(--main-purple);
@@ -120,18 +125,16 @@
             display: flex; justify-content: space-between; align-items: center;
             font-size: 14px; color: #efeff1; margin-bottom: 10px; font-weight: 600;
         }
-
         .skill-info i { font-size: 18px; margin-right: 8px; filter: drop-shadow(0 0 5px currentColor); }
 
-        /* Language Colors */
+        .fa-php { color: #777bb4; }
         .fa-python { color: #4584b6; }
-        .fa-code { color: #00599c; } /* C++ */
+        .fa-code { color: #00599c; }
         .fa-js { color: #f7df1e; }
         .fa-html5 { color: #e34f26; }
+        .fa-database { color: #00d2ff; }
 
-        .track {
-            height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;
-        }
+        .track { height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
         .fill {
             height: 100%; border-radius: 10px;
             background: linear-gradient(90deg, var(--main-purple), var(--soft-purple));
@@ -144,14 +147,19 @@
             color: #7f8c8d; text-align: center; font-size: 12px; line-height: 1.6;
         }
 
-        /* Status Colors */
         .online { background: #00ff88 !important; box-shadow: 0 0 15px #00ff88; }
         .idle { background: #ffaa00 !important; }
         .dnd { background: #ff3e3e !important; }
 
+        .click-spark {
+            position: absolute; width: 10px; height: 10px;
+            background: var(--main-purple); border-radius: 50%;
+            pointer-events: none; animation: spark 0.6s linear forwards;
+        }
+
+        @keyframes spark { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Responsive */
         @media (max-width: 900px) {
             body { overflow-y: auto; align-items: flex-start; padding: 40px 20px; }
             .container { flex-direction: column; align-items: center; }
@@ -159,7 +167,7 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
     <canvas id="snow-canvas"></canvas>
 
@@ -179,31 +187,22 @@
                 <a href="https://www.instagram.com/dech_crypt?igsh=cXNia3J4ZTZxeXdn" target="_blank" class="btn btn-ig">
                     <i class="fab fa-instagram"></i> INSTAGRAM
                 </a>
+                
+                <div class="btn btn-stress" id="stress-btn">
+                    <i class="fas fa-ghost"></i> แก้เครียด
+                </div>
             </div>
         </div>
 
         <div class="card skill-side">
-            <h2 class="header-title">DEVELOPER_STATS_V3.sys</h2>
+            <h2 class="header-title">CORE_SKILLS.sys</h2>
 
-            <div class="skill-box">
-                <div class="skill-info"><span><i class="fab fa-python"></i> PYTHON</span><span>95%</span></div>
-                <div class="track"><div class="fill" style="width: 95%;"></div></div>
-            </div>
-
-            <div class="skill-box">
-                <div class="skill-info"><span><i class="fas fa-code"></i> C++ / C#</span><span>82%</span></div>
-                <div class="track"><div class="fill" style="width: 82%;"></div></div>
-            </div>
-
-            <div class="skill-box">
-                <div class="skill-info"><span><i class="fab fa-js"></i> JAVASCRIPT</span><span>89%</span></div>
-                <div class="track"><div class="fill" style="width: 89%;"></div></div>
-            </div>
-
-            <div class="skill-box">
-                <div class="skill-info"><span><i class="fab fa-html5"></i> HTML5 / UI</span><span>92%</span></div>
-                <div class="track"><div class="fill" style="width: 92%;"></div></div>
-            </div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fab fa-php"></i> PHP</span><span>99%</span></div><div class="track"><div class="fill" style="width: 99%;"></div></div></div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fab fa-python"></i> PYTHON</span><span>95%</span></div><div class="track"><div class="fill" style="width: 95%;"></div></div></div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fas fa-code"></i> C++ / C#</span><span>82%</span></div><div class="track"><div class="fill" style="width: 82%;"></div></div></div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fab fa-js"></i> JAVASCRIPT</span><span>89%</span></div><div class="track"><div class="fill" style="width: 89%;"></div></div></div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fab fa-html5"></i> HTML5 / UI</span><span>92%</span></div><div class="track"><div class="fill" style="width: 92%;"></div></div></div>
+            <div class="skill-box"><div class="skill-info"><span><i class="fas fa-database"></i> SQL</span><span>50%</span></div><div class="track"><div class="fill" style="width: 50%;"></div></div></div>
 
             <div class="footer">
                 "Code is the poetry of the digital night." <br>
@@ -213,43 +212,45 @@
     </div>
 
     <script>
+        /** [ULTIMATE PROTECTION SYSTEM] **/
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C" || e.key === "K")) || (e.ctrlKey && (e.key === "u" || e.key === "U" || e.key === "s" || e.key === "S" || e.key === "p" || e.key === "P" || e.key === "a" || e.key === "A" || e.key === "c" || e.key === "C"))) {
+                e.preventDefault(); return false;
+            }
+        });
+
+        (function() {
+            const devtools = { isOpen: false };
+            const element = new Image();
+            Object.defineProperty(element, 'id', { get: function() { devtools.isOpen = true; throw new Error("DevTools detected"); } });
+            setInterval(function() {
+                devtools.isOpen = false; console.log(element); console.clear();
+                if (devtools.isOpen) { while(true) { debugger; } }
+            }, 1000);
+        })();
+
         // 1. Purple Snow Animation
         const canvas = document.getElementById('snow-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-
         function initSnow() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
             for (let i = 0; i < 100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    speed: Math.random() * 1 + 0.5,
-                    opacity: Math.random() * 0.5 + 0.3
-                });
+                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 3 + 1, speed: Math.random() * 1 + 0.5, opacity: Math.random() * 0.5 + 0.3 });
             }
         }
-
         function drawSnow() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(188, 19, 254, ${p.opacity})`; // สีม่วงนีออน
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#bc13fe';
-                ctx.fill();
-                p.y += p.speed;
-                p.x += Math.sin(p.y / 50) * 0.5;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(188, 19, 254, ${p.opacity})`; ctx.shadowBlur = 10; ctx.shadowColor = '#bc13fe'; ctx.fill();
+                p.y += p.speed; p.x += Math.sin(p.y / 50) * 0.5;
                 if (p.y > canvas.height) p.y = -10;
             });
             requestAnimationFrame(drawSnow);
         }
-        window.addEventListener('resize', initSnow);
-        initSnow(); drawSnow();
+        window.addEventListener('resize', initSnow); initSnow(); drawSnow();
 
         // 2. Discord API (Lanyard)
         const UID = "1314293185836486737";
@@ -268,14 +269,16 @@
         }
         fetchDiscord(); setInterval(fetchDiscord, 10000);
 
-        // 3. Security
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
-                e.preventDefault(); return false;
-            }
+        // 3. Stress Reliever - Spark Effect Only
+        const stressBtn = document.getElementById('stress-btn');
+        stressBtn.addEventListener('click', (e) => {
+            const spark = document.createElement('div');
+            spark.classList.add('click-spark');
+            spark.style.left = (e.clientX - 5) + 'px'; 
+            spark.style.top = (e.clientY - 5) + 'px';
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 600);
         });
-        document.addEventListener('dragstart', (e) => e.preventDefault());
-        setInterval(() => { (function(){}).constructor("debugger")(); }, 500);
     </script>
 </body>
 </html>
