@@ -17,7 +17,6 @@
             --neon-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
         }
 
-        /* [STRICT SECURITY CSS] */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             user-select: none !important; 
@@ -101,7 +100,6 @@
         .btn-dc { background: #5865F2; }
         .btn-ig { background: linear-gradient(45deg, #833ab4, #fd1d1d, #f56040); }
         
-        /* ปุ่มแก้เครียด - พร้อมสติกเกอร์ผี */
         .btn-stress {
             background: rgba(188, 19, 254, 0.15);
             border: 2px dashed var(--main-purple);
@@ -181,7 +179,7 @@
             <span id="uName" class="tag-txt">Connecting System...</span>
             
             <div class="btn-list">
-                <a href="https://discord.gg/7vUx9pHtXQ" target="_blank" class="btn btn-dc">
+                <a href="https://discord.gg/MVtmTXW5SW" target="_blank" class="btn btn-dc">
                     <i class="fab fa-discord"></i> DISCORD SERVER
                 </a>
                 <a href="https://www.instagram.com/dech_crypt?igsh=cXNia3J4ZTZxeXdn" target="_blank" class="btn btn-ig">
@@ -212,7 +210,6 @@
     </div>
 
     <script>
-        /** [ULTIMATE PROTECTION SYSTEM] **/
         document.addEventListener('keydown', function(e) {
             if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C" || e.key === "K")) || (e.ctrlKey && (e.key === "u" || e.key === "U" || e.key === "s" || e.key === "S" || e.key === "p" || e.key === "P" || e.key === "a" || e.key === "A" || e.key === "c" || e.key === "C"))) {
                 e.preventDefault(); return false;
@@ -229,7 +226,6 @@
             }, 1000);
         })();
 
-        // 1. Purple Snow Animation
         const canvas = document.getElementById('snow-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -252,7 +248,6 @@
         }
         window.addEventListener('resize', initSnow); initSnow(); drawSnow();
 
-        // 2. Discord API (Lanyard) - UPDATED WITH NEW UID
         const UID = "1508023704788013069";
         async function fetchDiscord() {
             try {
@@ -269,7 +264,6 @@
         }
         fetchDiscord(); setInterval(fetchDiscord, 10000);
 
-        // 3. Stress Reliever - Spark Effect Only
         const stressBtn = document.getElementById('stress-btn');
         stressBtn.addEventListener('click', (e) => {
             const spark = document.createElement('div');
